@@ -6,24 +6,60 @@
     <title>Pokemon</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        #content {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         #pokemon-container {
+            justify-content: center; /* Center the cards */
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 20px; /* Add space between the cards */
         }
 
         .pokemon-card {
             border: 1px solid #ccc;
             padding: 10px;
             border-radius: 5px;
-            width: 20%; /* Adjusted to ensure 5 cards per row */
+            width: calc(20% - 20px); /* Adjust width to account for gap */
             text-align: center;
-            box-sizing: border-box; /* Ensures padding and border are included in the width */
+            box-sizing: border-box;
         }
 
         .pokemon-card img {
             width: 90%;
             border-radius: 5px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            width: 300px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            background-color: #f8d030;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #e5c026;
         }
     </style>
 </head>
@@ -38,12 +74,16 @@
             <li><a href="games.html">Games</a></li>
         </ul>
     </nav>
-    <form action="search.html" method="get"></form>
-        <input type="text" name="query" placeholder="Search Pokemon">
-        <button type="submit">Search</button>
-    </form>
 
-    <div id="pokemon-container"></div>
+    <div id="content">
+        <h1>Pokemon</h1>
+        <form action="search.html" method="get">
+            <input type="text" name="query" placeholder="Search Pokemon">
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="pokemon-container"></div>
+    </div>
 
     <script src="script.js"></script>
     <script>
@@ -51,3 +91,54 @@
     </script>
 </body>
 </html>
+<script>
+    async function fetchPokemon() {
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20');
+        const data = await response.json();
+        const pokemonContainer = document.getElementById('pokemon-container');
+    
+        for (const pokemon of data.results) {
+            const pokemonResponse = await fetch(pokemon.url);
+            const pokemonData = await pokemonResponse.json();
+            const pokemonCard = document.createElement('div');
+            pokemonCard.classList.add('pokemon-card');
+            pokemonCard.innerHTML = `
+                <h3>${pokemon.name}</h3>
+                <img src="${getPokemonImage(pokemonData)}" alt="${pokemon.name}">
+            `;
+            pokemonContainer.appendChild(pokemonCard);
+        }
+    }
+
+    function getPokemonImage(pokemon) {
+        return pokemon.sprites.other['official-artwork'].front_default;
+    }
+
+    function getPokemon(name){
+        fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Pokemon not found');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const pokemonContainer = document.getElementById('pokemon-container');
+                pokemonContainer.innerHTML = `
+                    <div class="pokemon-card">
+                        <h2>${data.name}</h2>
+                        <img src="${getPokemonImage(data)}" alt="${data.name}">
+                    </div>
+                `;
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    }
+    
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = document.querySelector('input[name="query"]').value.toLowerCase();
+        getPokemon(query);
+    });
+</script>
