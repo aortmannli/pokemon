@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Pokémon</title>
+    <title>Pokémon Berries</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        #berry-info {
+            width: 60%
+        }
 
+        #berry-photos {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        #berry-info img {
+            width: 50%;
+        }
+
+        #list-section {
+            width: 20%;
+            margin-left: 10px;
+            padding: 10px;
+            border: 2px solid pink;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        #berry-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #berry-list li {
+            margin: 10px 0;
+        }
+
+        #berry-list a {
+            color: #661d50;
+        }
+
+        #berry-list a:hover {
+            color: #007bff;
+        }
+
+        
+    </style>
+    <script src="script.js"></script>
 </head>
 <body>
     <nav>
@@ -18,6 +61,35 @@
             <li><a href="games.html">Games</a></li>
         </ul>
     </nav>
-    <h1>Berries</h1>
+    <div id="content">
+        <h1 id="title">Berries</h1>
+
+        <div id="berry-info">
+            <div id="berry-photos">
+                <img src="img/berries.png" alt="berries" >
+                <img src="img/pokemon_go_berries.jpg" alt="pokemon-go-berries">
+            </div>
+            
+        
+            <p>
+                Berries (Japanese: きのみ Tree Fruit) are small, juicy, fleshy fruit. As in the real world, a large variety exists in the Pokémon world, with a large range of flavors and effects. First found in the Generation II games, many Berries have since become critical held items in battle, where their various effects include HP and status condition restoration, stat enhancement, and even damage negation.
+                They can be found in the wild, grown on Berry trees, or obtained from other sources such as the Poké Mart or by winning in-game events.
+            </p>
+            <p>
+                Berries can be used in the field to achieve a variety of effects, such as healing Pokémon, diagnosing the nature of a Pokémon, filling a Pokémon's belly, or advancing time to evolve certain Pokémon.
+            </p>
+            <p><strong>Click on the name of the berry to learn more about it on Bublepedia.</strong></p>
+        </div>
+
+        <div id="list-section">
+            <h3>List of Berries:</h3>
+            <ul id="berry-list">   
+            </ul>
+        </div>
+    </div>
+    
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', fetchBerries);
+</script>
 </html>
